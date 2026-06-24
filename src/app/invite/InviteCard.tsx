@@ -149,10 +149,10 @@ export default function InviteCard() {
                 className="recipient-name name-slide-up"
                 style={{
                   /* ↓ CHỈNH TOP: vị trí dọc tính theo % chiều cao ảnh */
-                  top: "70.5%",
+                  top: "71.5%",
                   left: "10%",
                   right: "10%",
-                  fontSize: "clamp(22px, 6.5vw, 40px)",
+                  fontSize: "clamp(22px, 6.5vw, 33px)",
                 }}
               >
                 {recipientName}
