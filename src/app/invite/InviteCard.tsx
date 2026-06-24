@@ -235,10 +235,10 @@ export default function InviteCard() {
                 <div
                   className="recipient-name name-slide-up"
                   style={{
-                    top: "71.5%",
+                    top: "68%",
                     left: "10%",
                     right: "10%",
-                    fontSize: "clamp(22px, 6.5vw, 33px)",
+                    fontSize: "clamp(22px, 6.5vw, 30px)",
                   }}
                 >
                   {recipientName}
@@ -251,7 +251,7 @@ export default function InviteCard() {
                 <div
                   className="action-buttons name-slide-up"
                   style={{
-                    top: "90%",
+                    top: "87%",
                     left: "8%",
                     right: "8%",
                   }}
