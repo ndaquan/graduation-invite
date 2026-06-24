@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&display=swap");
+
+/* Google Fonts (Great Vibes, Cormorant Garamond) được load tự động bởi Next.js next/font/google */
+
 
 /* ─── Custom Animations for Invitation Card ─── */
 
@@ -66,4 +68,84 @@
 
 .pulse-hint {
   animation: pulse-hint 2s ease-in-out infinite;
+}
+
+/* ─── Butterfly Effect Animations ─── */
+
+/* Vỗ cánh nhẹ */
+@keyframes wing-flutter {
+  0%   { transform: scaleX(1)    rotate(-2deg); }
+  50%  { transform: scaleX(0.35) rotate(4deg);  }
+  100% { transform: scaleX(1)    rotate(-2deg); }
+}
+
+/* 8 hướng bay khác nhau – đều xuất phát từ (0,0) */
+@keyframes bf-1 {
+  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
+  18%  { opacity: 1; transform: translate(-45px,-75px) scale(1.2); }
+  100% { opacity: 0; transform: translate(-200px,-390px) scale(0.65) rotate(-35deg); }
+}
+@keyframes bf-2 {
+  0%   { opacity: 0; transform: translate(0, 0)      scale(0.2); }
+  18%  { opacity: 1; transform: translate(15px,-85px) scale(1.1); }
+  100% { opacity: 0; transform: translate(80px,-430px) scale(0.6) rotate(18deg); }
+}
+@keyframes bf-3 {
+  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
+  18%  { opacity: 1; transform: translate(65px,-55px)  scale(1.3); }
+  100% { opacity: 0; transform: translate(290px,-300px) scale(0.55) rotate(48deg); }
+}
+@keyframes bf-4 {
+  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
+  18%  { opacity: 1; transform: translate(-75px,-35px) scale(1.1); }
+  100% { opacity: 0; transform: translate(-330px,-180px) scale(0.7) rotate(-55deg); }
+}
+@keyframes bf-5 {
+  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
+  18%  { opacity: 1; transform: translate(85px,-28px)  scale(1.0); }
+  100% { opacity: 0; transform: translate(360px,-140px) scale(0.65) rotate(65deg); }
+}
+@keyframes bf-6 {
+  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
+  18%  { opacity: 1; transform: translate(-25px,-95px) scale(1.4); }
+  100% { opacity: 0; transform: translate(-60px,-450px) scale(0.5) rotate(-12deg); }
+}
+@keyframes bf-7 {
+  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
+  18%  { opacity: 1; transform: translate(-55px,-62px) scale(1.2); }
+  100% { opacity: 0; transform: translate(-240px,-330px) scale(0.7) rotate(-40deg); }
+}
+@keyframes bf-8 {
+  0%   { opacity: 0; transform: translate(0, 0)      scale(0.2); }
+  18%  { opacity: 1; transform: translate(45px,-70px) scale(1.15); }
+  100% { opacity: 0; transform: translate(200px,-360px) scale(0.6) rotate(30deg); }
+}
+
+/* Container + wrapper helper classes */
+.butterflies-anchor {
+  position: absolute;
+  /* Gốc tọa độ: khoảng 30% từ trên xuống = nơi nắp phong bì mở */
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 50;
+  /* Cho phép bướm bay ra ngoài card */
+  overflow: visible;
+}
+
+.butterfly-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.butterfly-inner {
+  display: block;
+  line-height: 1;
+  animation: wing-flutter 0.28s ease-in-out infinite alternate;
+  transform-origin: center;
+  will-change: transform;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-import InviteCard from "./InviteCard";
+import InviteCard from "../invite/InviteCard";
 
 // Bọc bằng Suspense vì InviteCard dùng useSearchParams
 export default function InvitePage() {
