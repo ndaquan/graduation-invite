@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useState, useCallback } from "react";
 import Image from "next/image";
+import MapPopup from "./MapPopup";
 import "../globals.css";
 
 // ─────────────────────────────────────────────
@@ -11,17 +12,23 @@ import "../globals.css";
 type Stage = "closed" | "opening" | "opened";
 
 // ─────────────────────────────────────────────
+//  ↓↓ CHỈNH link bản đồ và số điện thoại tại đây ↓↓
+// ─────────────────────────────────────────────
+const MAP_URL = "https://maps.google.com/?q=Địa+điểm+tổ+chức"; // ← Thay bằng link Google Maps thật
+const PHONE_NUMBER = "0901234567";                               // ← Thay bằng số điện thoại thật
+
+// ─────────────────────────────────────────────
 //  Dữ liệu 8 con bướm (keyframe + delay + size + màu)
 //  ↓ Thêm/bớt phần tử để tăng/giảm số lượng bướm
 // ─────────────────────────────────────────────
 const BUTTERFLIES = [
-  { id: 1, anim: "bf-1", delay: 0,   dur: 2.2, size: 30, hue:   0 },
-  { id: 2, anim: "bf-2", delay: 80,  dur: 2.0, size: 26, hue:  40 },
+  { id: 1, anim: "bf-1", delay: 0, dur: 2.2, size: 30, hue: 0 },
+  { id: 2, anim: "bf-2", delay: 80, dur: 2.0, size: 26, hue: 40 },
   { id: 3, anim: "bf-3", delay: 150, dur: 2.4, size: 34, hue: 280 },
-  { id: 4, anim: "bf-4", delay: 60,  dur: 2.1, size: 28, hue: 320 },
-  { id: 5, anim: "bf-5", delay: 220, dur: 2.3, size: 32, hue:  60 },
+  { id: 4, anim: "bf-4", delay: 60, dur: 2.1, size: 28, hue: 320 },
+  { id: 5, anim: "bf-5", delay: 220, dur: 2.3, size: 32, hue: 60 },
   { id: 6, anim: "bf-6", delay: 100, dur: 1.9, size: 24, hue: 200 },
-  { id: 7, anim: "bf-7", delay: 40,  dur: 2.5, size: 22, hue: 150 },
+  { id: 7, anim: "bf-7", delay: 40, dur: 2.5, size: 22, hue: 150 },
   { id: 8, anim: "bf-8", delay: 180, dur: 2.0, size: 36, hue: 340 },
 ];
 
@@ -34,6 +41,7 @@ export default function InviteCard() {
   const [stage, setStage] = useState<Stage>("closed");
   const [shaking, setShaking] = useState(false);
   const [showButterflies, setShowButterflies] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   // ─── Handler bấm/chạm vào phong bì ───
   const handleOpen = useCallback(() => {
@@ -142,16 +150,56 @@ export default function InviteCard() {
                 style={{
                   /* ↓ CHỈNH TOP: vị trí dọc tính theo % chiều cao ảnh */
                   top: "73.5%",
-
-                  /* ↓ CHỈNH LEFT/RIGHT: căn giữa theo chiều ngang */
                   left: "10%",
                   right: "10%",
-
-                  /* ↓ CHỈNH FONT-SIZE: clamp(nhỏ nhất, linh hoạt, lớn nhất) */
                   fontSize: "clamp(22px, 6.5vw, 40px)",
                 }}
               >
                 {recipientName}
+              </div>
+
+              {/*
+               * ── Hai nút Sơ đồ + Điện thoại ──────────────
+               * Chỉnh top (%) cho khớp vị trí dưới địa chỉ trên ảnh
+               * Chỉnh left/right để canh lề ngang
+               * font-size, padding dùng clamp() tự co giãn
+               * ──────────────────────────────────────────── */}
+              <div
+                className="action-buttons name-slide-up"
+                style={{
+                  /* ↓ CHỈNH TOP: kéo lên/xuống cho khớp ảnh */
+                  top: "91%",
+
+                  /* ↓ CHỈNH LEFT/RIGHT: canh lề ngang */
+                  left: "8%",
+                  right: "8%",
+                }}
+              >
+                {/* Nút Sơ đồ → mở popup bản đồ */}
+                <button
+                  onClick={() => setShowMap(true)}
+                  className="action-btn btn-map"
+                  aria-label="Xem sơ đồ đường đi"
+                  type="button"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  Sơ đồ
+                </button>
+
+                {/* Nút Điện thoại → gọi trực tiếp */}
+                <a
+                  href={`tel:${PHONE_NUMBER}`}
+                  className="action-btn btn-phone"
+                  aria-label={`Gọi ${PHONE_NUMBER}`}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z" />
+                  </svg>
+                  {PHONE_NUMBER}
+                </a>
               </div>
             </div>
           )}
@@ -196,7 +244,11 @@ export default function InviteCard() {
         )}
       </div>
 
-      {/* ── Inline styles đặt ở đây để dễ chỉnh ── */}
+
+
+      {/* ── Map Popup ── */}
+      {showMap && <MapPopup onClose={() => setShowMap(false)} />}
+
       <style jsx>{`
         /* ─── Background ngoài thiệp: pattern gấu bông ─── */
         :global(.invite-page-bg) {
@@ -314,6 +366,72 @@ export default function InviteCard() {
           /* Không cho chọn chữ */
           user-select: none;
           pointer-events: none;
+        }
+
+        /* ─── Hai nút bên trong ảnh – position absolute như tên người nhận ─── */
+        :global(.action-buttons) {
+          /* QUAN TRỌNG: absolute để neo vào card-image-container */
+          position: absolute;
+          display: flex;
+          gap: clamp(6px, 1.5vw, 12px);
+          justify-content: center;
+          /* left/right/top được đặt inline (chỉnh trong JSX) */
+        }
+
+        :global(.action-btn) {
+          display: flex;
+          align-items: center;
+          gap: clamp(4px, 1vw, 8px);
+          padding: clamp(5px, 1.2vw, 9px) clamp(10px, 2.5vw, 18px);
+          border-radius: 999px;
+          font-size: clamp(9px, 2.2vw, 13px);
+          font-weight: 700;
+          letter-spacing: 0.03em;
+          text-decoration: none;
+          cursor: pointer;
+          /* reset <button> defaults */
+          border: 1.5px solid transparent;
+          outline: none;
+          font-family: inherit;
+          transition: transform 0.18s ease, box-shadow 0.18s ease;
+          backdrop-filter: blur(10px);
+
+          -webkit-backdrop-filter: blur(10px);
+          border: 1.5px solid transparent;
+          white-space: nowrap;
+          user-select: none;
+        }
+
+        :global(.action-btn svg) {
+          /* ↓ CHỈNH kích thước icon */
+          width: clamp(10px, 2vw, 15px);
+          height: clamp(10px, 2vw, 15px);
+          flex-shrink: 0;
+        }
+
+        :global(.action-btn:hover) {
+          transform: translateY(-2px) scale(1.04);
+          box-shadow: 0 6px 18px rgba(183, 100, 120, 0.35);
+        }
+
+        :global(.action-btn:active) {
+          transform: translateY(0) scale(0.98);
+        }
+
+        /* Nút Sơ đồ: nền trắng mờ, chữ hồng đậm */
+        :global(.btn-map) {
+          background: rgba(255, 255, 255, 0.88);
+          border-color: rgba(215, 125, 148, 0.45);
+          color: #b85470;
+          box-shadow: 0 3px 12px rgba(183, 100, 120, 0.18);
+        }
+
+        /* Nút Điện thoại: nền hồng gradient, chữ trắng */
+        :global(.btn-phone) {
+          background: linear-gradient(135deg, #e8879a 0%, #d05070 100%);
+          border-color: rgba(208, 80, 112, 0.25);
+          color: #fff;
+          box-shadow: 0 3px 12px rgba(208, 80, 112, 0.38);
         }
       `}</style>
     </main>

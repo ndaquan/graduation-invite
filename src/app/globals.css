@@ -70,6 +70,41 @@
   animation: pulse-hint 2s ease-in-out infinite;
 }
 
+/* ─── Map Popup Animations ─── */
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes popup-in {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.82) translateY(24px); }
+  70%  { opacity: 1; transform: translate(-50%, -50%) scale(1.02) translateY(-2px); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1)    translateY(0); }
+}
+
+@keyframes popup-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to   { opacity: 0; transform: translate(-50%, -50%) scale(0.88) translateY(16px); }
+}
+
+@keyframes info-row-in {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.popup-backdrop {
+  animation: backdrop-in 0.25s ease forwards;
+}
+
+.popup-card {
+  animation: popup-in 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.popup-card.closing {
+  animation: popup-out 0.22s ease forwards;
+}
+
 /* ─── Butterfly Effect Animations ─── */
 
 /* Vỗ cánh nhẹ */
