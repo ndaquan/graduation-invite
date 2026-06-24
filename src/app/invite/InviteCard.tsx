@@ -15,7 +15,7 @@ type Stage = "closed" | "opening" | "opened";
 //  ↓↓ CHỈNH link bản đồ và số điện thoại tại đây ↓↓
 // ─────────────────────────────────────────────
 const MAP_URL = "https://maps.google.com/?q=Địa+điểm+tổ+chức"; // ← Thay bằng link Google Maps thật
-const PHONE_NUMBER = "0901234567";                               // ← Thay bằng số điện thoại thật
+const PHONE_NUMBER = "0901500935";                               // ← Thay bằng số điện thoại thật
 
 // ─────────────────────────────────────────────
 //  Dữ liệu 8 con bướm (keyframe + delay + size + màu)
@@ -149,7 +149,7 @@ export default function InviteCard() {
                 className="recipient-name name-slide-up"
                 style={{
                   /* ↓ CHỈNH TOP: vị trí dọc tính theo % chiều cao ảnh */
-                  top: "73.5%",
+                  top: "70.5%",
                   left: "10%",
                   right: "10%",
                   fontSize: "clamp(22px, 6.5vw, 40px)",
@@ -183,8 +183,8 @@ export default function InviteCard() {
                   type="button"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
+                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
                   </svg>
                   Sơ đồ
                 </button>
