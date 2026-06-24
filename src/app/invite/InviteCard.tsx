@@ -84,132 +84,141 @@ export default function InviteCard() {
           aria-label={stage === "closed" ? "Bấm để mở thiệp mời" : undefined}
           style={{ cursor: stage === "closed" ? "pointer" : "default" }}
         >
-          {/* ══════════════════════════════
-              STAGE 1: Phong bì đóng
-          ══════════════════════════════ */}
-          {stage === "closed" && (
-            <div
-              className={`card-image-container ${shaking ? "envelope-shake" : ""}`}
-            >
-              <Image
-                src="/closed.png"
-                alt="Phong bì đóng"
-                fill
-                priority
-                sizes="(max-width: 480px) 95vw, 480px"
-                style={{ objectFit: "contain" }}
-                draggable={false}
-              />
+          {/* ══════════════════════════════════════════════════════
+              3 layer chồng nhau – luôn trong DOM, opacity transition
+              → crossfade mượt, không flash khi mount/unmount
+          ══════════════════════════════════════════════════════ */}
 
-              {/* Gợi ý bấm */}
-              <div className="tap-hint pulse-hint">
-                <span>✉ Bấm để mở thiệp</span>
-              </div>
+          {/* ── LAYER 1: Phong bì đóng ── */}
+          <div
+            className={`card-image-container ${shaking ? "envelope-shake" : ""}`}
+            style={{
+              opacity: stage === "closed" ? 1 : 0,
+              transition: "opacity 0.45s ease",
+              zIndex: stage === "closed" ? 2 : 1,
+              pointerEvents: stage === "closed" ? "auto" : "none",
+            }}
+          >
+            <Image
+              src="/closed.png"
+              alt="Phong bì đóng"
+              fill
+              priority
+              sizes="(max-width: 480px) 95vw, 480px"
+              style={{ objectFit: "contain" }}
+              draggable={false}
+            />
+            <div className="tap-hint pulse-hint">
+              <span>✉ Bấm để mở thiệp</span>
             </div>
-          )}
+          </div>
 
-          {/* ══════════════════════════════
-              STAGE 2: Đang mở phong bì
-          ══════════════════════════════ */}
-          {stage === "opening" && (
-            <div className="card-image-container fade-zoom-in">
-              <Image
-                src="/opening.png"
-                alt="Phong bì đang mở"
-                fill
-                priority
-                sizes="(max-width: 480px) 95vw, 480px"
-                style={{ objectFit: "contain" }}
-                draggable={false}
-              />
-            </div>
-          )}
+          {/* ── LAYER 2: Đang mở phong bì ── */}
+          <div
+            className="card-image-container"
+            style={{
+              opacity: stage === "opening" ? 1 : 0,
+              transition: "opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
+              zIndex: stage === "opening" ? 2 : 1,
+            }}
+          >
+            <Image
+              src="/opening.png"
+              alt="Phong bì đang mở"
+              fill
+              priority
+              sizes="(max-width: 480px) 95vw, 480px"
+              style={{ objectFit: "contain" }}
+              draggable={false}
+            />
+          </div>
 
-          {/* ══════════════════════════════
-              STAGE 3: Thiệp đã mở
-          ══════════════════════════════ */}
-          {stage === "opened" && (
-            <div className="card-image-container fade-in-card">
-              <Image
-                src="/opened-bg.png"
-                alt="Thiệp mời tốt nghiệp"
-                fill
-                priority
-                sizes="(max-width: 480px) 95vw, 480px"
-                style={{ objectFit: "contain" }}
-                draggable={false}
-              />
+          {/* ── LAYER 3: Thiệp đã mở ── */}
+          <div
+            className="card-image-container"
+            style={{
+              opacity: stage === "opened" ? 1 : 0,
+              transition: "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+              zIndex: stage === "opened" ? 2 : 1,
+            }}
+          >
+            <Image
+              src="/opened-bg.png"
+              alt="Thiệp mời tốt nghiệp"
+              fill
+              priority
+              sizes="(max-width: 480px) 95vw, 480px"
+              style={{ objectFit: "contain" }}
+              draggable={false}
+            />
 
-              {/*
-               * ── Tên người nhận ──────────────────────────
-               * Chỉnh top (%) để di chuyển lên/xuống trên ảnh
-               * Chỉnh font-size (clamp) để to/nhỏ theo màn hình
-               * ──────────────────────────────────────────── */}
-              <div
-                className="recipient-name name-slide-up"
-                style={{
-                  /* ↓ CHỈNH TOP: vị trí dọc tính theo % chiều cao ảnh */
-                  top: "71.5%",
-                  left: "10%",
-                  right: "10%",
-                  fontSize: "clamp(22px, 6.5vw, 33px)",
-                }}
-              >
-                {recipientName}
-              </div>
-
-              {/*
-               * ── Hai nút Sơ đồ + Điện thoại ──────────────
-               * Chỉnh top (%) cho khớp vị trí dưới địa chỉ trên ảnh
-               * Chỉnh left/right để canh lề ngang
-               * font-size, padding dùng clamp() tự co giãn
-               * ──────────────────────────────────────────── */}
-              <div
-                className="action-buttons name-slide-up"
-                style={{
-                  /* ↓ CHỈNH TOP: kéo lên/xuống cho khớp ảnh */
-                  top: "91%",
-
-                  /* ↓ CHỈNH LEFT/RIGHT: canh lề ngang */
-                  left: "8%",
-                  right: "8%",
-                }}
-              >
-                {/* Nút Sơ đồ → mở popup bản đồ */}
-                <button
-                  onClick={() => setShowMap(true)}
-                  className="action-btn btn-map"
-                  aria-label="Xem sơ đồ đường đi"
-                  type="button"
+            {/* Tên + nút chỉ mount khi opened để animation entry hoạt động đúng */}
+            {stage === "opened" && (
+              <>
+                {/*
+                 * ── Tên người nhận ──────────────────────────
+                 * Chỉnh top (%) để di chuyển lên/xuống trên ảnh
+                 * ──────────────────────────────────────────── */}
+                <div
+                  className="recipient-name name-slide-up"
+                  style={{
+                    top: "71.5%",
+                    left: "10%",
+                    right: "10%",
+                    fontSize: "clamp(22px, 6.5vw, 33px)",
+                  }}
                 >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                  Sơ đồ
-                </button>
+                  {recipientName}
+                </div>
 
-                {/* Nút Điện thoại → gọi trực tiếp */}
-                <a
-                  href={`tel:${PHONE_NUMBER}`}
-                  className="action-btn btn-phone"
-                  aria-label={`Gọi ${PHONE_NUMBER}`}
+                {/*
+                 * ── Hai nút Sơ đồ + Điện thoại ──────────────
+                 * Chỉnh top (%) cho khớp vị trí dưới địa chỉ
+                 * ──────────────────────────────────────────── */}
+                <div
+                  className="action-buttons name-slide-up"
+                  style={{
+                    top: "91%",
+                    left: "8%",
+                    right: "8%",
+                  }}
                 >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z" />
-                  </svg>
-                  {PHONE_NUMBER}
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
+                  <button
+                    onClick={() => setShowMap(true)}
+                    className="action-btn btn-map"
+                    aria-label="Xem sơ đồ đường đi"
+                    type="button"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    Sơ đồ
+                  </button>
+
+                  <a
+                    href={`tel:${PHONE_NUMBER}`}
+                    className="action-btn btn-phone"
+                    aria-label={`Gọi ${PHONE_NUMBER}`}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z" />
+                    </svg>
+                    {PHONE_NUMBER}
+                  </a>
+                </div>
+              </>
+            )}
+          </div>
+
+        </div>{/* end card-inner */}
 
         {/* ══════════════════════════════════════════
             BƯỚM BAY — nằm ngoài card-inner (không bị
             clip bởi overflow:hidden) nhưng trong
             card-wrapper để có reference position đúng.
         ══════════════════════════════════════════ */}
+
         {showButterflies && (
           <div className="butterflies-anchor" aria-hidden="true">
             {BUTTERFLIES.map((bf) => (
