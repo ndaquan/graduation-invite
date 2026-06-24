@@ -238,7 +238,7 @@ export default function InviteCard() {
                     top: "68%",
                     left: "10%",
                     right: "10%",
-                    fontSize: "clamp(22px, 6.5vw, 30px)",
+                    fontSize: "clamp(22px, 6.5vw, 29px)",
                   }}
                 >
                   {recipientName}
