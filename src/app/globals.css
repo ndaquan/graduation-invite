@@ -5,69 +5,203 @@
 
 /* ─── Custom Animations for Invitation Card ─── */
 
-/* Shake / wiggle khi bấm vào phong bì đóng */
+/* ═══════════════════════════════════════════════════════
+   ENVELOPE SHAKE — mạnh hơn, có vibrate + scale pulse
+═══════════════════════════════════════════════════════ */
 @keyframes envelope-shake {
-  0%   { transform: scale(1) rotate(0deg); }
-  15%  { transform: scale(1.04) rotate(-1.5deg); }
-  30%  { transform: scale(1.04) rotate(1.5deg); }
-  45%  { transform: scale(1.04) rotate(-1deg); }
-  60%  { transform: scale(1.04) rotate(1deg); }
-  75%  { transform: scale(1.02) rotate(-0.5deg); }
-  100% { transform: scale(1) rotate(0deg); }
+  0%   { transform: scale(1)    rotate(0deg)    translateY(0); }
+  8%   { transform: scale(1.06) rotate(-3deg)   translateY(-4px); }
+  16%  { transform: scale(1.07) rotate(3.5deg)  translateY(2px); }
+  24%  { transform: scale(1.06) rotate(-2.5deg) translateY(-3px); }
+  32%  { transform: scale(1.07) rotate(2deg)    translateY(2px); }
+  40%  { transform: scale(1.05) rotate(-1.5deg) translateY(-2px); }
+  50%  { transform: scale(1.06) rotate(1deg)    translateY(1px); }
+  62%  { transform: scale(1.04) rotate(-0.5deg) translateY(0); }
+  75%  { transform: scale(1.02) rotate(0.3deg)  translateY(0); }
+  100% { transform: scale(1)    rotate(0deg)    translateY(0); }
 }
 
-/* Fade-in + zoom nhẹ cho ảnh opening */
+/* ─── BURST FLASH khi mở ─── */
+@keyframes burst-flash {
+  0%   { opacity: 0; transform: scale(0.5); }
+  25%  { opacity: 0.85; transform: scale(1.6); }
+  60%  { opacity: 0.4; transform: scale(2.2); }
+  100% { opacity: 0; transform: scale(3); }
+}
+
+/* ─── Thiệp nảy ra mạnh khi hiện ─── */
+@keyframes card-bounce-in {
+  0%   { opacity: 0; transform: scale(0.55) translateY(30px); }
+  55%  { opacity: 1; transform: scale(1.07) translateY(-8px); }
+  72%  { transform: scale(0.97) translateY(4px); }
+  85%  { transform: scale(1.03) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ─── Vignette glow xung quanh thiệp ─── */
+@keyframes card-glow-pulse {
+  0%, 100% { box-shadow:
+    0 20px 60px rgba(183, 100, 120, 0.25),
+    0 8px 24px rgba(183, 100, 120, 0.15),
+    0 0 0 0 rgba(215, 125, 148, 0);
+  }
+  50% { box-shadow:
+    0 30px 80px rgba(183, 100, 120, 0.55),
+    0 12px 36px rgba(183, 100, 120, 0.35),
+    0 0 60px 12px rgba(215, 125, 148, 0.25);
+  }
+}
+
+/* ─── Fade-in + zoom nhẹ cho ảnh opening ─── */
 @keyframes fade-zoom-in {
-  0%   { opacity: 0; transform: scale(0.94) blur(4px); filter: blur(4px); }
-  60%  { opacity: 1; transform: scale(1.01) blur(0px); filter: blur(0px); }
-  100% { opacity: 1; transform: scale(1); filter: blur(0px); }
+  0%   { opacity: 0; transform: scale(0.88); filter: blur(6px); }
+  50%  { opacity: 1; transform: scale(1.03); filter: blur(0); }
+  100% { opacity: 1; transform: scale(1);    filter: blur(0); }
 }
 
-/* Fade-in mượt cho ảnh opened */
+/* ─── Fade-in mượt cho ảnh opened ─── */
 @keyframes fade-in-card {
   0%   { opacity: 0; transform: scale(0.97); }
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* Tên người nhận: fade in + trượt lên nhẹ */
+/* ─── Tên người nhận: fade in + trượt lên ─── */
 @keyframes name-slide-up {
-  0%   { opacity: 0; transform: translateY(18px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0%   { opacity: 0; transform: translateY(28px) scale(0.92); }
+  70%  { opacity: 1; transform: translateY(-4px) scale(1.03); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Shimmer glow trên tên để thêm sang trọng */
+/* ─── Shimmer glow sang trọng trên tên ─── */
 @keyframes name-glow {
-  0%, 100% { text-shadow: 0 0 8px rgba(215, 125, 148, 0.35); }
-  50%       { text-shadow: 0 0 20px rgba(215, 125, 148, 0.65); }
+  0%, 100% {
+    text-shadow:
+      0 2px 12px rgba(215, 125, 148, 0.4),
+      0 0 6px rgba(255, 255, 255, 0.6);
+  }
+  50% {
+    text-shadow:
+      0 0 24px rgba(215, 125, 148, 0.9),
+      0 0 40px rgba(255, 180, 200, 0.6),
+      0 2px 6px rgba(255, 255, 255, 0.9);
+  }
 }
 
-/* Pulse nhẹ cho icon hint "tap to open" */
+/* ─── Pulse hint ─── */
 @keyframes pulse-hint {
-  0%, 100% { opacity: 0.6; transform: translateY(0); }
-  50%       { opacity: 1; transform: translateY(-4px); }
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) translateY(0)   scale(1); }
+  50%       { opacity: 1;   transform: translateX(-50%) translateY(-5px) scale(1.04); }
 }
 
-/* ─── Utility classes dùng trong invite page ─── */
+/* ─── Petal/Confetti xoay và rơi ─── */
+@keyframes petal-fly-1 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0) rotate(0deg); }
+  15%  { opacity: 1; transform: translate(-60px,-110px) scale(1.3) rotate(-80deg); }
+  100% { opacity: 0; transform: translate(-180px,-480px) scale(0.5) rotate(-340deg); }
+}
+@keyframes petal-fly-2 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0) rotate(0deg); }
+  15%  { opacity: 1; transform: translate(50px,-120px) scale(1.2) rotate(90deg); }
+  100% { opacity: 0; transform: translate(160px,-500px) scale(0.45) rotate(400deg); }
+}
+@keyframes petal-fly-3 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0) rotate(0deg); }
+  15%  { opacity: 1; transform: translate(-110px,-60px) scale(1.4) rotate(-120deg); }
+  100% { opacity: 0; transform: translate(-420px,-280px) scale(0.4) rotate(-500deg); }
+}
+@keyframes petal-fly-4 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0) rotate(0deg); }
+  15%  { opacity: 1; transform: translate(120px,-50px) scale(1.3) rotate(110deg); }
+  100% { opacity: 0; transform: translate(460px,-240px) scale(0.45) rotate(480deg); }
+}
+@keyframes petal-fly-5 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0) rotate(0deg); }
+  15%  { opacity: 1; transform: translate(-30px,-130px) scale(1.5) rotate(-60deg); }
+  100% { opacity: 0; transform: translate(-80px,-560px) scale(0.35) rotate(-280deg); }
+}
+@keyframes petal-fly-6 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0) rotate(0deg); }
+  15%  { opacity: 1; transform: translate(80px,-95px) scale(1.2) rotate(150deg); }
+  100% { opacity: 0; transform: translate(300px,-440px) scale(0.5) rotate(600deg); }
+}
+@keyframes petal-fly-7 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0) rotate(0deg); }
+  15%  { opacity: 1; transform: translate(-90px,20px) scale(1.1) rotate(-200deg); }
+  100% { opacity: 0; transform: translate(-380px,80px) scale(0.55) rotate(-700deg); }
+}
+@keyframes petal-fly-8 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0) rotate(0deg); }
+  15%  { opacity: 1; transform: translate(100px,15px) scale(1.2) rotate(180deg); }
+  100% { opacity: 0; transform: translate(420px,60px) scale(0.5) rotate(660deg); }
+}
+@keyframes sparkle-pop-1 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0); }
+  20%  { opacity: 1; transform: translate(-70px,-140px) scale(1.6); }
+  100% { opacity: 0; transform: translate(-130px,-340px) scale(0.3); }
+}
+@keyframes sparkle-pop-2 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0); }
+  20%  { opacity: 1; transform: translate(80px,-150px) scale(1.8); }
+  100% { opacity: 0; transform: translate(150px,-360px) scale(0.3); }
+}
+@keyframes sparkle-pop-3 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0); }
+  20%  { opacity: 1; transform: translate(-150px,-80px) scale(1.5); }
+  100% { opacity: 0; transform: translate(-320px,-200px) scale(0.25); }
+}
+@keyframes sparkle-pop-4 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0); }
+  20%  { opacity: 1; transform: translate(160px,-70px) scale(1.6); }
+  100% { opacity: 0; transform: translate(350px,-180px) scale(0.25); }
+}
+
+/* ─── Utility classes ─── */
 
 .envelope-shake {
-  animation: envelope-shake 0.55s ease-in-out;
+  animation: envelope-shake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 .fade-zoom-in {
-  animation: fade-zoom-in 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation: fade-zoom-in 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
 }
 
 .fade-in-card {
   animation: fade-in-card 0.55s ease-out forwards;
 }
 
+/* ─── Khi thiệp opened: bounce in + glow liên tục ─── */
+.card-bounce-in {
+  animation: card-bounce-in 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.card-glow-active {
+  animation: card-glow-pulse 2.5s ease-in-out infinite;
+}
+
 .name-slide-up {
-  animation: name-slide-up 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s both,
-             name-glow 3s ease-in-out 1s infinite;
+  animation:
+    name-slide-up 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both,
+    name-glow 2.5s ease-in-out 1.2s infinite;
 }
 
 .pulse-hint {
   animation: pulse-hint 2s ease-in-out infinite;
+}
+
+/* Burst flash overlay */
+.burst-flash {
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 230, 200, 0.95) 0%,
+    rgba(255, 180, 150, 0.6) 35%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 100;
+  animation: burst-flash 0.65s ease-out forwards;
 }
 
 /* ─── Map Popup Animations ─── */
@@ -105,67 +239,162 @@
   animation: popup-out 0.22s ease forwards;
 }
 
-/* ─── Butterfly Effect Animations ─── */
+/* ═══════════════════════════════════════════════════════
+   BUTTERFLY EFFECT
+═══════════════════════════════════════════════════════ */
 
-/* Vỗ cánh nhẹ */
 @keyframes wing-flutter {
-  0%   { transform: scaleX(1)    rotate(-2deg); }
-  50%  { transform: scaleX(0.35) rotate(4deg);  }
-  100% { transform: scaleX(1)    rotate(-2deg); }
+  0%   { transform: scaleX(1)    rotate(-3deg); }
+  50%  { transform: scaleX(0.28) rotate(5deg);  }
+  100% { transform: scaleX(1)    rotate(-3deg); }
 }
 
-/* 8 hướng bay khác nhau – đều xuất phát từ (0,0) */
+/* 16 hướng bay, xuất phát từ (0,0), đường cong dài hơn */
 @keyframes bf-1 {
-  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
-  18%  { opacity: 1; transform: translate(-45px,-75px) scale(1.2); }
-  100% { opacity: 0; transform: translate(-200px,-390px) scale(0.65) rotate(-35deg); }
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(-55px,-100px) scale(1.35); }
+  55%  { opacity: 0.9; transform: translate(-140px,-280px) scale(1.0); }
+  100% { opacity: 0; transform: translate(-260px,-520px) scale(0.5) rotate(-55deg); }
 }
 @keyframes bf-2 {
-  0%   { opacity: 0; transform: translate(0, 0)      scale(0.2); }
-  18%  { opacity: 1; transform: translate(15px,-85px) scale(1.1); }
-  100% { opacity: 0; transform: translate(80px,-430px) scale(0.6) rotate(18deg); }
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(20px,-110px) scale(1.25); }
+  55%  { opacity: 0.9; transform: translate(60px,-320px) scale(0.95); }
+  100% { opacity: 0; transform: translate(100px,-580px) scale(0.45) rotate(25deg); }
 }
 @keyframes bf-3 {
-  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
-  18%  { opacity: 1; transform: translate(65px,-55px)  scale(1.3); }
-  100% { opacity: 0; transform: translate(290px,-300px) scale(0.55) rotate(48deg); }
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(80px,-70px) scale(1.4); }
+  55%  { opacity: 0.9; transform: translate(200px,-220px) scale(1.0); }
+  100% { opacity: 0; transform: translate(380px,-420px) scale(0.4) rotate(60deg); }
 }
 @keyframes bf-4 {
-  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
-  18%  { opacity: 1; transform: translate(-75px,-35px) scale(1.1); }
-  100% { opacity: 0; transform: translate(-330px,-180px) scale(0.7) rotate(-55deg); }
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(-90px,-45px) scale(1.2); }
+  55%  { opacity: 0.9; transform: translate(-240px,-150px) scale(0.9); }
+  100% { opacity: 0; transform: translate(-460px,-260px) scale(0.5) rotate(-70deg); }
 }
 @keyframes bf-5 {
-  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
-  18%  { opacity: 1; transform: translate(85px,-28px)  scale(1.0); }
-  100% { opacity: 0; transform: translate(360px,-140px) scale(0.65) rotate(65deg); }
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(100px,-35px) scale(1.1); }
+  55%  { opacity: 0.9; transform: translate(270px,-120px) scale(0.85); }
+  100% { opacity: 0; transform: translate(500px,-210px) scale(0.5) rotate(80deg); }
 }
 @keyframes bf-6 {
-  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
-  18%  { opacity: 1; transform: translate(-25px,-95px) scale(1.4); }
-  100% { opacity: 0; transform: translate(-60px,-450px) scale(0.5) rotate(-12deg); }
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(-30px,-120px) scale(1.5); }
+  55%  { opacity: 0.9; transform: translate(-70px,-360px) scale(1.05); }
+  100% { opacity: 0; transform: translate(-110px,-620px) scale(0.38) rotate(-18deg); }
 }
 @keyframes bf-7 {
-  0%   { opacity: 0; transform: translate(0, 0)       scale(0.2); }
-  18%  { opacity: 1; transform: translate(-55px,-62px) scale(1.2); }
-  100% { opacity: 0; transform: translate(-240px,-330px) scale(0.7) rotate(-40deg); }
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(-70px,-80px) scale(1.3); }
+  55%  { opacity: 0.9; transform: translate(-190px,-260px) scale(0.95); }
+  100% { opacity: 0; transform: translate(-340px,-470px) scale(0.55) rotate(-48deg); }
 }
 @keyframes bf-8 {
-  0%   { opacity: 0; transform: translate(0, 0)      scale(0.2); }
-  18%  { opacity: 1; transform: translate(45px,-70px) scale(1.15); }
-  100% { opacity: 0; transform: translate(200px,-360px) scale(0.6) rotate(30deg); }
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(55px,-90px) scale(1.25); }
+  55%  { opacity: 0.9; transform: translate(155px,-290px) scale(0.9); }
+  100% { opacity: 0; transform: translate(275px,-510px) scale(0.45) rotate(38deg); }
+}
+@keyframes bf-9 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(-120px,-20px) scale(1.2); }
+  55%  { opacity: 0.9; transform: translate(-300px,-60px) scale(0.8); }
+  100% { opacity: 0; transform: translate(-520px,-100px) scale(0.5) rotate(-90deg); }
+}
+@keyframes bf-10 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(130px,-10px) scale(1.15); }
+  55%  { opacity: 0.9; transform: translate(310px,-40px) scale(0.82); }
+  100% { opacity: 0; transform: translate(540px,-80px) scale(0.5) rotate(88deg); }
+}
+@keyframes bf-11 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(-40px,-130px) scale(1.45); }
+  55%  { opacity: 0.9; transform: translate(-90px,-400px) scale(1.0); }
+  100% { opacity: 0; transform: translate(-140px,-680px) scale(0.35) rotate(-30deg); }
+}
+@keyframes bf-12 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(60px,-115px) scale(1.3); }
+  55%  { opacity: 0.9; transform: translate(160px,-370px) scale(0.92); }
+  100% { opacity: 0; transform: translate(240px,-640px) scale(0.4) rotate(42deg); }
+}
+@keyframes bf-13 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(-105px,-55px) scale(1.2); }
+  55%  { opacity: 0.9; transform: translate(-280px,-180px) scale(0.88); }
+  100% { opacity: 0; transform: translate(-500px,-320px) scale(0.5) rotate(-65deg); }
+}
+@keyframes bf-14 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(115px,-45px) scale(1.25); }
+  55%  { opacity: 0.9; transform: translate(300px,-160px) scale(0.87); }
+  100% { opacity: 0; transform: translate(530px,-290px) scale(0.48) rotate(72deg); }
+}
+@keyframes bf-15 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(-85px,30px) scale(1.1); }
+  55%  { opacity: 0.9; transform: translate(-220px,80px) scale(0.82); }
+  100% { opacity: 0; transform: translate(-400px,150px) scale(0.5) rotate(-110deg); }
+}
+@keyframes bf-16 {
+  0%   { opacity: 0; transform: translate(0,0) scale(0.15); }
+  12%  { opacity: 1; transform: translate(95px,25px) scale(1.15); }
+  55%  { opacity: 0.9; transform: translate(240px,70px) scale(0.85); }
+  100% { opacity: 0; transform: translate(440px,140px) scale(0.5) rotate(105deg); }
+}
+
+/* ─── Petal / Confetti ─── */
+.petals-anchor {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 55;
+  overflow: visible;
+}
+
+.petal-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.petal-inner {
+  display: block;
+  line-height: 1;
+  will-change: transform;
+}
+
+/* ─── Sparkle ─── */
+.sparkle-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sparkle-inner {
+  display: block;
+  line-height: 1;
+  will-change: transform;
 }
 
 /* Container + wrapper helper classes */
 .butterflies-anchor {
   position: absolute;
-  /* Gốc tọa độ: khoảng 30% từ trên xuống = nơi nắp phong bì mở */
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 50;
-  /* Cho phép bướm bay ra ngoài card */
   overflow: visible;
 }
 
@@ -180,7 +409,7 @@
 .butterfly-inner {
   display: block;
   line-height: 1;
-  animation: wing-flutter 0.28s ease-in-out infinite alternate;
+  animation: wing-flutter 0.22s ease-in-out infinite alternate;
   transform-origin: center;
   will-change: transform;
 }
